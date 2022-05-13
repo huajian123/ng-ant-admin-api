@@ -1,0 +1,88 @@
+server:
+  port: 8003
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: D:/var/download/
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/ng-ant-admin-api?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    #########  druid连接池配置  #########
+    druid:
+      # 连接池建立时创建的初始化连接数
+      initial-size: 1
+      #	连接池中最大的活跃连接数
+      max-active: 20
+      # 连接池中最小的活跃连接数
+      min-idle: 1
+      # 连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁。
+      max-wait: 60000
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      pool-prepared-statements: false
+      # 指定每个连接上PSCache的大小，要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100。
+      max-pool-prepared-statement-per-connection-size: -1
+      # 用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。（不同数据库不同）
+      validation-query: SELECT 'x'
+      # 指定连接校验查询的超时时间，单位：秒。
+      validation-query-timeout: 1
+      # 是否在获得连接后检测其可用性,连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-borrow: false
+      # 是否在连接放回连接池后检测其可用性，做了这个配置会降低性能。
+      test-on-return: false
+      # 是否在连接空闲一段时间后检测其可用性，建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒。
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒。
+      min-evictable-idle-time-millis: 300000
+      # 登陆超时时间，单位是秒。
+      login-timeout: 3
+      # 查询超时时间，单位是秒。
+      query-timeout: 3
+      # 事务查询超时时间，单位是秒。
+      transaction-query-timeout: 60
+      # 异步关闭连接。
+      async-close-connection-enable: true
+      # 属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：监控统计用的filter:stat，日志用的filter:log4j，防御sql注入的filter:wall
+      filters: stat
+
+      ##########  StatViewServlet监控配置  ##########
+      stat-view-servlet:
+        login-username: guoheng
+        login-password: guoheng
+        allow:
+        deny:
+  aop:
+    auto: true
+
+  ###################  redis配置  ###################
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+        time-between-eviction-runs: 30000
+
+mybatis:
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+
+  ###################  自定义配置  ###################
+fbl:
+  # 验证码类型 math 数组计算 char 字符验证
+  captchaType: math
+  uploadPath: /api/file/
+
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.user.UserMapper">
+
+    <select id="listUser" resultType="model.vo.sys.SelectUserVo">
+        SELECT DISTINCT
+        su.id ,su.user_name userName,su.is_available available,
+        sex,mobile,email,last_login_time lastLoginTime,su.create_time createTime ,telephone,
+        department_id departmentId,
+        department_name  departmentName
+        from
+        sys_user su
+        left join
+        sys_department on su.department_id = sys_department.id
+        where
+        1 = 1
+        <if test="userName != null and userName != ''">
+            and su.user_name like concat('%',#{userName},'%')
+        </if>
+        <if test="available != null">
+            and is_available = #{available}
+        </if>
+        <if test="mobile != null">
+            and su.mobile like concat('%',#{mobile},'%')
+        </if>
+        <if test="departmentId != null">
+            and su.department_id = #{departmentId}
+        </if>
+        order by
+            su.create_time desc
+    </select>
+
+    <select id="selectUserVoById" resultType="model.vo.sys.DetailUserVo">
+        SELECT DISTINCT
+            su.id ,su.user_name userName,su.is_available available,
+            sex,mobile,email,last_login_time lastLoginTime,su.create_time createTime ,telephone,department_id departmentId,
+            department_name  departmentName
+        from
+            sys_user su
+        left join
+            sys_department on su.department_id = sys_department.id
+        where
+            su.id = #{id}
+    </select>
+</mapper>

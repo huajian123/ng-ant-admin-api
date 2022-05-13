@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.app.mapper.user.UserRoleMapper">
+
+    <insert id="insertUserRole" parameterType="list" >
+        insert into
+            user_role(user_id, role_id) values
+         <foreach collection="list" item="item"  separator=",">
+            (#{item.userId},#{item.roleId})
+         </foreach>
+    </insert>
+
+    <select id="selectRoleName" resultType="model.dto.sys.role.UpdateRoleDto">
+        SELECT
+           role_id id, role_name roleName
+        from
+            sys_role sr
+        LEFT JOIN
+            user_role ur on sr.id = ur.role_id
+        LEFT JOIN
+            sys_user su on ur.user_id = su.id
+        where
+            su.id = #{userId}
+    </select>
+</mapper>
